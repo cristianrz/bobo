@@ -3,7 +3,7 @@
 # stdout
 BEGIN {
 	PUBLIC = "html"
-	CMD = "smu " ARGV[1]
+	CMD = "markdown " ARGV[1]
 	output = ARGV[1]
 	# Replace the directory, if any, with PUBLIC/
 	gsub(/^([^\/]*\/)*/, PUBLIC "/", output)
