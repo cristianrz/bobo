@@ -1,0 +1,56 @@
+#!/usr/bin/env sh
+
+set -eu
+
+BLOG_ARTICLES="./articles"
+BLOG_INDEX="blog.md"
+BUILD="./bobo-build-page"
+PAGES="./pages"
+PUBLIC="./html"
+RESOURCES="./resources"
+
+log() {
+	echo "[+] $*"
+}
+
+build_directory(){
+	for i in "$1"/*.md; do
+		log "Building $i..."
+		"$BUILD" "$i" 
+	done
+}
+
+build_blog() {
+	echo "# Posts" >"$BLOG_INDEX"
+
+	build_directory "$BLOG_ARTICLES" >> "$BLOG_INDEX"
+
+	log "Building blog index..."
+	"$BUILD" "$BLOG_INDEX" >/dev/null
+}
+
+init() {
+	log "Removing previous build..."
+	rm -rf ./"$PUBLIC"/*
+	mkdir -p "$PUBLIC"
+}
+
+cleanup() {
+	log "Cleaning up..."
+	rm -f "$BLOG_INDEX"
+}
+
+build_common() {
+	log "Copying common files..."
+	cp -r "$RESOURCES"/* "$PUBLIC"/ || true
+}
+
+build_pages() {
+	build_directory "$PAGES" >/dev/null
+}
+
+trap 'cleanup' EXIT
+init
+build_common
+build_blog
+build_pages

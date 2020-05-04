@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+set -eu
+
+PORT="8080"
+
+./bobo-build
+
+echo [+] Listening on port "$PORT"...
+busybox httpd -f -p "$PORT"

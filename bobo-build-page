@@ -1,0 +1,36 @@
+#!/usr/bin/awk -f
+# Gets a file, builds the html, puts it into PUBLIC and outputs the title to
+# stdout
+BEGIN {
+	PUBLIC = "html"
+	CMD = "smu " ARGV[1]
+	output = ARGV[1]
+	# Replace the directory, if any, with PUBLIC/
+	gsub(/^([^\/]*\/)*/, PUBLIC "/", output)
+	gsub(/md$/, "html", output)
+	while (CMD | getline $0) {
+		content = content $0 "\n"
+		if ($0 ~ /<h1>/) {
+			# Strip html tags
+			gsub(/<[^>]*>/, "", $0)
+			title = $0
+		}
+		if ($0 ~ /<h6>/) {
+			# Strip html tags
+			gsub(/<[^>]*>/, "", $0)
+			date = $0
+		}
+	}
+	ARGV[1] = "template.html"
+}
+
+{
+	gsub(/\$article\$/, content, $0)
+	print > output
+}
+
+END {
+	gsub(PUBLIC "/", "", output)
+	printf "* [%s (%s)](%s)\n", title, date, output
+}
+

@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+
+set -eu
+
+echo [+] Initialising articles...
+
+mkdir -p articles
+cat << 'EOF' > articles/article1.md
+# My first article
+
+###### 1 Jan 1970
+
+Lorem ipsum.
+EOF
+
+mkdir -p html
+
+echo [+] Initialising pages...
+
+mkdir -p pages
+cat << 'EOF' > pages/index.md
+# Hello, world!
+
+Welcome to my website.
+EOF
+
+mkdir -p resources/images
+touch resources/styles.css
+
+echo [+] Initialising template...
+
+echo '$article$' >template.html
+
+echo [+] Building for the first time...
+./bobo-build >/dev/null
+
+cat << 'EOF'
+
+You can now edit the files inside "articles/", "pages/" and "resources/" and
+start a local server with
+	
+	bobo-run
+
+EOF
