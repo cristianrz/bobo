@@ -31,9 +31,6 @@ echo [+] Initialising template...
 
 echo '$article$' >template.html
 
-echo [+] Building for the first time...
-./bobo-build >/dev/null
-
 cat << 'EOF'
 
 You can now edit the files inside "articles/", "pages/" and "resources/" and
