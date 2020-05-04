@@ -1,6 +1,6 @@
 # bobo
 
-KISS static site generator.
+KISS static site generator in ~120 lines of POSIX shell and awk.
 
 ## Getting Started
 
