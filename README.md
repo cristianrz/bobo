@@ -11,7 +11,8 @@ $ git clone https://github.com/cristianrz/bobo.git
 ### Prerequisites
 
 * `git`
-* `markdown`/`discount`
+* `smu` as a markdown to html converter, but any converter can be used, just
+need to change the `CMD` variable in `./bobo-build-page`.
 * `busybox`
 
 ### How to use

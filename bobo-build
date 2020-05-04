@@ -15,7 +15,6 @@ log() {
 
 build_directory(){
 	for i in "$1"/*.md; do
-		log "Building $i..."
 		"$BUILD" "$i" 
 	done
 }
