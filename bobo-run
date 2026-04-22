@@ -1,11 +1,16 @@
 #!/usr/bin/env sh
-
 set -eu
 
 PORT="8080"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-./bobo-build
+command -v busybox >/dev/null 2>&1 || {
+	echo "error: busybox is not installed" >&2
+	exit 1
+}
 
-cd html
-echo [+] Listening on port "$PORT"...
+"$SCRIPT_DIR/bobo-build"
+
+cd "$SCRIPT_DIR/html"
+echo "[+] Listening on http://localhost:$PORT"
 busybox httpd -f -p "$PORT"
