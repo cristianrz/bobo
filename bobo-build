@@ -1,5 +1,4 @@
 #!/usr/bin/env sh
-
 set -eu
 
 BLOG_ARTICLES="./articles"
@@ -13,24 +12,24 @@ log() {
 	echo "[+] $*"
 }
 
-build_directory(){
+build_directory() {
 	for i in "$1"/*.md; do
-		"$BUILD" "$i" 
+		[ -f "$i" ] || continue
+		"$BUILD" "$i"
 	done
 }
 
 build_blog() {
 	echo "# Posts" >"$BLOG_INDEX"
-
-	build_directory "$BLOG_ARTICLES" >> "$BLOG_INDEX"
-
+	log "Building articles..."
+	build_directory "$BLOG_ARTICLES" >>"$BLOG_INDEX"
 	log "Building blog index..."
 	"$BUILD" "$BLOG_INDEX" >/dev/null
 }
 
 init() {
 	log "Removing previous build..."
-	rm -rf ./"$PUBLIC"/*
+	rm -rf "$PUBLIC"
 	mkdir -p "$PUBLIC"
 }
 
@@ -41,15 +40,39 @@ cleanup() {
 
 build_common() {
 	log "Copying common files..."
-	cp -r "$RESOURCES"/* "$PUBLIC"/ || true
+	if [ -d "$RESOURCES" ]; then
+		cp -r "$RESOURCES"/* "$PUBLIC"/
+	fi
 }
 
 build_pages() {
+	log "Building pages..."
 	build_directory "$PAGES" >/dev/null
 }
 
+check_deps() {
+	for dep in smu awk; do
+		command -v "$dep" >/dev/null 2>&1 || {
+			echo "error: $dep is not installed" >&2
+			exit 1
+		}
+	done
+	[ -f "$BUILD" ] || {
+		echo "error: $BUILD not found" >&2
+		exit 1
+	}
+	[ -f "template.html" ] || {
+		echo "error: template.html not found" >&2
+		exit 1
+	}
+}
+
 trap 'cleanup' EXIT
+
+check_deps
 init
 build_common
 build_blog
 build_pages
+
+log "Done."
