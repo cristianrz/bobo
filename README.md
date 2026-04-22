@@ -1,43 +1,55 @@
 # bobo
-
 KISS static site generator in ~120 lines of POSIX shell and awk.
 
-## Getting Started
+## Prerequisites
 
-```
-$ git clone https://github.com/cristianrz/bobo.git
-```
+* [`smu`](https://github.com/Gottox/smu) — Markdown to HTML (or any converter; change `CMD` in `bobo-build-page`)
+* `busybox` — local development server
 
-### Prerequisites
+## Getting started
 
-* `git`
-* `smu` as a markdown to html converter, but any converter can be used, just
-need to change the `CMD` variable in `./bobo-build-page`.
-* `busybox`
-
-### How to use
-
-```
-$ ./bobo-init
+```sh
+git clone https://github.com/cristianrz/bobo.git
+cd mysite
+./bobo-init
 ```
 
-Now edit your website and
+Edit files inside `articles/`, `pages/`, and `resources/`, then:
+
+```sh
+./bobo-run
+# open http://localhost:8080
+```
+
+## Project layout
 
 ```
-$ ./bobo-run
+mysite/
+├── articles/        # Blog posts (Markdown)
+├── pages/           # Static pages (Markdown)
+├── resources/       # CSS, images, fonts — copied verbatim to html/
+├── template.html    # Page template — use $article$ as content placeholder
+└── html/            # Generated output (do not edit)
 ```
 
-and you have a local server at `localhost:8080`
+## Writing content
+
+The first `h1` is used as the page title and the first `h6` as the date
+in the blog index:
+
+```markdown
+# My article title
+###### 12 Apr 2026
+
+Body text here.
+```
 
 ## Authors
 
-  - **Cristian Ariza** - [cristianrz](https://github.com/cristianrz)
+- **Cristian Ariza** — [cristianrz](https://github.com/cristianrz)
 
-See also the list of
-[contributors](https://github.com/cristianrz/bobo/contributors)
-who participated in this project.
+See also the list of [contributors](https://github.com/cristianrz/bobo/contributors).
 
 ## License
 
-See the [LICENSE](LICENSE) file for details
-
+See the [LICENSE](LICENSE) file for details.
